@@ -1,3 +1,13 @@
+/*
+Authors: Chuks Egbuchunam, Zehao Huang, Jiaqi Ma
+         Brandon Scheitlin, Trent Matthews
+Assignment Title: Breakout
+Assignment Details: Make a game that breaks blocks
+                    with a ball and paddle.
+Due Date: After Thanksgiving
+Date Created: 11/11/2014
+Date Last Modified: 11/12/2014
+*/
 #include "gLibrary.h"
 
 ball::ball (Point p, ink c, char sh, double sp, double d)
@@ -27,8 +37,8 @@ void ball::setOldLoc(Point loc)
 }
 void ball::move()
 {
-        loc.setX(loc.getX() + speed * cos(dir));
-        loc.setY(loc.getY() - speed * sin(dir));
+        loc.setX((loc.getX() + speed * cos(dir)) );
+        loc.setY((loc.getY() - speed * sin(dir)) );
 }
 Point ball::getLoc()
 {
@@ -116,3 +126,37 @@ double ball::getOldDir()
 {
     return oldDir;
 }
+double ball::newDir()
+{
+    double reflection;
+    if(getOldDir() >2*3.14)
+    {
+        setOldDir(getOldDir() - (2*3.14));
+    }
+    if(getOldDir() < 0)
+    {
+        setOldDir(getOldDir() + 2*3.14);
+    }
+    if (getOldDir() >= 0 && getOldDir() <= 3.14)
+    {
+        reflection = 3.14 - getOldDir();
+    }
+    if (getOldDir() >= 3.14 && getOldDir() <= 2*3.14)
+    {
+        reflection = 3.14 - getOldDir();
+    }
+    return reflection;
+}
+double ball::keepBallinZerotoTwoPi()
+{
+    if(getOldDir() > 2*3.14)
+    {
+        setOldDir(getOldDir() - 2*3.14);
+    }
+    if(getOldDir() < 0)
+    {
+        setOldDir(getOldDir() + 2*3.14);
+    }
+}
+
+
