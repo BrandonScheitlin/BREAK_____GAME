@@ -1,3 +1,13 @@
+/*
+Authors: Chuks Egbuchunam, Zehao Huang, Jiaqi Ma
+         Brandon Scheitlin, Trent Matthews
+Assignment Title: Breakout
+Assignment Details: Make a game that breaks blocks
+                    with a ball and paddle.
+Due Date: After Thanksgiving
+Date Created: 11/11/2014
+Date Last Modified: 11/12/2014
+*/
 #include "gLibrary.h"
 
     paddleType::paddleType (int w, ink c,
@@ -51,7 +61,11 @@
          }
          return hit;
     }
-    bool paddleType::paddleHitWall (paddleType pT, int col)
+    Point paddleType::getLoc()
+    {
+        return loc;
+    }
+    bool paddleType::paddleHitWall (int col)
     {
         bool HitWall = false;
         if (loc.getX() == col)
@@ -63,11 +77,19 @@
     double paddleType::ballHitOuterPaddle(ball b)
     {
         double directions;
+        if(b.getOldDir() > 2*3.14)
+        {
+            b.setOldDir(b.getOldDir() - 2*3.14);
+        }
+        if(b.getOldDir() < 0)
+        {
+            b.setOldDir(b.getOldDir() + 2*3.14);
+        }
         if ((loc.getY()) <= (b.getLoc().getY()))
         {
             if ((loc.getX() - width/2) <= (b.getLoc().getX()) && (loc.getX() - width/2 + 3) >= (b.getLoc().getX()))
             {
-                if(b.getOldDir() == 3.14/2 || b.getOldDir() == 5*3.14/6 || b.getOldDir() == 2*3.14/3 || b.getOldDir() == 3*3.14/4 || b.getOldDir() == 3.14/6)
+                if(b.getOldDir() >= 3.14 && b.getOldDir() <= 3*3.14/2)
                 {
                     directions = 5*3.14/6;
                 }
@@ -78,7 +100,7 @@
             }
             if((loc.getX() + width/2 + 2) >= (b.getLoc().getX()) && (loc.getX() + width/2 - 3) <= (b.getLoc().getX()))
             {
-                if(b.getOldDir() == 3.14/2 || b.getOldDir() == 5*3.14/6 || b.getOldDir() == 2*3.14/3 || b.getOldDir() == 3.14/4 || b.getOldDir() == 3.14/6)
+                if(b.getOldDir() >= 3*3.14/2 && b.getOldDir() <= 2*3.14)
                 {
                     directions = 3.14/6;
                 }
@@ -93,11 +115,19 @@
     double paddleType::ballHitInnerPaddle(ball b)
     {
         double directions;
+        if(b.getOldDir() > 2*3.14)
+        {
+            b.setOldDir(b.getOldDir() - 2*3.14);
+        }
+        if(b.getOldDir() < 0)
+        {
+            b.setOldDir(b.getOldDir() + 2*3.14);
+        }
         if ((loc.getY()) <= (b.getLoc().getY()))
         {
             if ((loc.getX() - width/2 + 3) <= (b.getLoc().getX()) && (loc.getX() - width/2 + 10) >= (b.getLoc().getX()))
             {
-                if(b.getOldDir() == 3.14/2 || b.getOldDir() == 5*3.14/6 || b.getOldDir() == 2*3.14/3 || b.getOldDir() == 3*3.14/4)
+                if(b.getOldDir() >= 3.14 && b.getOldDir() <= 3*3.14/2)
                 {
                     directions = 2*3.14/3;
                 }
@@ -108,7 +138,7 @@
             }
             if((loc.getX() + width/2 - 3) >= (b.getLoc().getX()) && (loc.getX() + width/2 - 10) <= (b.getLoc().getX()))
             {
-                if(b.getOldDir() == 3.14/2 || b.getOldDir() == 5*3.14/6 || b.getOldDir() == 2*3.14/3 || b.getOldDir() == 3.14/4 || b.getOldDir() == 3.14/3)
+                if(b.getOldDir() >= 3*3.14/2 && b.getOldDir() <= 2*3.14)
                 {
                     directions = 3.14/3;
                 }
@@ -127,35 +157,39 @@
         {
             if ((loc.getX() - width/2 + 10) <= (b.getLoc().getX()) && (loc.getX() + width/2 - 10) >= (b.getLoc().getX()))
             {
-                if(b.getOldDir() == 3.14/6)
-                {
-                    directions = 3.14/6;
-                }
-                if(b.getOldDir() == 3.14/4)
-                {
-                    directions = 3.14/4;
-                }
-                if(b.getOldDir() == 3.14/3)
-                {
-                    directions = 3.14/3;
-                }
-                if(b.getOldDir() == 5*3.14/6)
-                {
-                    directions = 5*3.14/6;
-                }
-                if(b.getOldDir() == 3*3.14/4)
-                {
-                    directions = 3*3.14/4;
-                }
-                if(b.getOldDir() == 2*3.14/3)
-                {
-                    directions = 2*3.14/3;
-                }
-                if(b.getOldDir() == 3.14/2)
-                {
-                    directions = 3.14/2;
-                }
+                directions = -b.getOldDir();
             }
         }
         return directions;
+    }
+
+    void paddleType::ballStuckToPaddle(ball gameBall, Plotter& screen)
+    {
+        int key = 0;
+        key = getch();
+        while(key != 32)
+        {
+            if (kbhit())
+            {
+
+                key = getch();
+                if (key == 224)
+                {
+                    key = getch();
+                }
+                if (key == 77 && !paddleHitWall(224))
+                {
+                    move(1);
+                }
+                if (key == 75 && !paddleHitWall(15))
+                {
+                    move(-1);
+                }
+                erase(screen);
+                draw(screen);
+                gameBall.erase(screen);
+                gameBall.draw(screen);
+
+            }
+        }
     }
