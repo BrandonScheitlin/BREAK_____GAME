@@ -1,113 +1,48 @@
+/*
+Authors: Chuks Egbuchunam, Zehao Huang, Jiaqi Ma
+         Brandon Scheitlin, Trent Matthews
+Assignment Title: Breakout
+Assignment Details: Make a game that breaks blocks
+                    with a ball and paddle.
+Due Date: After Thanksgiving
+Date Created: 11/11/2014
+Date Last Modified: 11/12/2014
+*/
 #include "gLibrary.h"
 
 double sideBoundariesReflections::topBoundaryReflection(ball b)
 {
     double reflection;
-    if(b.getOldDir() == 3.14/4)
+    while(b.getOldDir() > 2*3.14)
     {
-        reflection = 7*3.14/4;
+        b.setOldDir(b.getOldDir() - 2*3.14);
     }
-    if (b.getOldDir() == 7*3.14/4)
+    while(b.getOldDir() < 0)
     {
-        reflection = (7*3.14/4);
+        b.setOldDir(b.getOldDir() + 2*3.14);
     }
-    if (b.getOldDir() == 5*3.14/4)
-    {
-        reflection = 5*3.14/4;
-    }
-    if (b.getOldDir() == 3*3.14/4)
-    {
-        reflection = 5*3.14/4;
-    }
-    if (b.getOldDir() == 3.14/2)
-    {
-        reflection = 3*3.14/2;
-    }
-    if(b.getOldDir() == 3.14/6)
-    {
-        reflection = 11*3.14/6;
-    }
-    if (b.getOldDir() == 11*3.14/6)
-    {
-        reflection = (11*3.14/6);
-    }
-    if (b.getOldDir() == 7*3.14/6)
-    {
-        reflection = 7*3.14/6;
-    }
-    if (b.getOldDir() == 5*3.14/6)
-    {
-        reflection = 7*3.14/6;
-    }
-    if(b.getOldDir() == 3.14/3)
-    {
-        reflection = 5*3.14/3;
-    }
-    if (b.getOldDir() == 5*3.14/3)
-    {
-        reflection = (5*3.14/3);
-    }
-    if (b.getOldDir() == 2*3.14/3)
-    {
-        reflection = 4*3.14/3;
-    }
-    if (b.getOldDir() == 4*3.14/3)
-    {
-        reflection = 4*3.14/3;
-    }
+    reflection = (-b.getOldDir());
     return reflection;
 
 }
 double sideBoundariesReflections::leftBoundaryReflection(ball b)
 {
     double reflection;
-    if(b.getOldDir() == 3*3.14/4)
+    while(b.getOldDir() > 2*3.14)
     {
-        reflection = 3.14/4;
+        b.setOldDir(b.getOldDir() - 2*3.14);
     }
-    if (b.getOldDir() == 3.14/4)
+    while(b.getOldDir() < 0)
     {
-        reflection = (3.14/4);
+        b.setOldDir(b.getOldDir() + 2*3.14);
     }
-    if (b.getOldDir() == 7*3.14/4)
+    if (b.getOldDir() >= 0 && b.getOldDir() <= 3.14)
     {
-        reflection = 7*3.14/4;
+        reflection = 3.14 - b.getOldDir();
     }
-    if (b.getOldDir() == 5*3.14/4)
+    if (b.getOldDir() >= 3.14 && b.getOldDir() <= 2*3.14)
     {
-        reflection = 7*3.14/4;
-    }
-    if(b.getOldDir() == 5*3.14/6)
-    {
-        reflection = 3.14/6;
-    }
-    if (b.getOldDir() == 3.14/6)
-    {
-        reflection = 3.14/6;
-    }
-    if (b.getOldDir() == 7*3.14/6)
-    {
-        reflection = 11*3.14/6;
-    }
-    if (b.getOldDir() == 11*3.14/6)
-    {
-        reflection = 11*3.14/6;
-    }
-    if(b.getOldDir() == 3.14/3)
-    {
-        reflection = 3.14/3;
-    }
-    if (b.getOldDir() == 2*3.14/3)
-    {
-        reflection = (3.14/3);
-    }
-    if (b.getOldDir() == 4*3.14/3)
-    {
-        reflection = 5*3.14/3;
-    }
-    if (b.getOldDir() == 5*3.14/3)
-    {
-        reflection = 5*3.14/3;
+        reflection = 3.14 - b.getOldDir();
     }
     return reflection;
 
@@ -115,53 +50,21 @@ double sideBoundariesReflections::leftBoundaryReflection(ball b)
 double sideBoundariesReflections::rightBoundaryReflection(ball b)
 {
     double reflection;
-    if(b.getOldDir() == 3*3.14/4)
+    while(b.getOldDir() > 2*3.14)
     {
-        reflection = 3*3.14/4;
+        b.setOldDir(b.getOldDir() - 2*3.14);
     }
-    if (b.getOldDir() == 3.14/4)
+    while(b.getOldDir() < 0)
     {
-        reflection = 3*3.14/4;
+        b.setOldDir(b.getOldDir() + 2*3.14);
     }
-    if (b.getOldDir() == 7*3.14/4)
+    if (b.getOldDir() >= 0 && b.getOldDir() <= 3.14)
     {
-        reflection = 5*3.14/4;
+        reflection = 3.14 - b.getOldDir();
     }
-    if (b.getOldDir() == 5*3.14/4)
+    if (b.getOldDir() >= 3.14 && b.getOldDir() <= 2*3.14)
     {
-        reflection = 5*3.14/4;
-    }
-    if(b.getOldDir() == 5*3.14/6)
-    {
-        reflection = 5*3.14/6;
-    }
-    if (b.getOldDir() == 3.14/6)
-    {
-        reflection = 5*3.14/6;
-    }
-    if (b.getOldDir() == 7*3.14/6)
-    {
-        reflection = 7*3.14/6;
-    }
-    if (b.getOldDir() == 11*3.14/6)
-    {
-        reflection = 7*3.14/6;
-    }
-    if(b.getOldDir() == 3.14/3)
-    {
-        reflection = 2*3.14/3;
-    }
-    if (b.getOldDir() == 2*3.14/3)
-    {
-        reflection = 2*3.14/3;
-    }
-    if (b.getOldDir() == 4*3.14/3)
-    {
-        reflection = 4*3.14/3;
-    }
-    if (b.getOldDir() == 5*3.14/3)
-    {
-        reflection = 4*3.14/3;
+        reflection = 3.14 - b.getOldDir();
     }
     return reflection;
 
